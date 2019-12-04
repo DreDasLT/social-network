@@ -25,15 +25,16 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
-
-    /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\UserType", inversedBy="users")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $userType;
 
     public function getId(): ?int
     {
@@ -67,11 +68,7 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return $this->getUserType()->getRoles();
     }
 
     public function setRoles(array $roles): self
@@ -111,5 +108,17 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getUserType(): ?UserType
+    {
+        return $this->userType;
+    }
+
+    public function setUserType(?UserType $userType): self
+    {
+        $this->userType = $userType;
+
+        return $this;
     }
 }
