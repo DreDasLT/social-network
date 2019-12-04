@@ -1,0 +1,33 @@
+{% extends 'security/base.html.twig' %}
+
+{% block title %}Prisijungimas{% endblock %}
+
+{% block form %}
+	<form class="form-signin" method="post">
+
+		{% if error %}
+			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+		{% endif %}
+		<div class="form-label-group">
+			<input type="email" id="inputEmail" name="email" class="form-control" placeholder="El. Paštas" required autofocus>
+			<label for="inputEmail">El. Paštas</label>
+		</div>
+
+		<div class="form-label-group">
+			<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Slaptažodis" required>
+			<label for="inputPassword">Slaptažodis</label>
+		</div>
+
+		<div class="custom-control custom-checkbox mb-3">
+			<input type="checkbox" class="custom-control-input" id="customCheck1">
+			<label class="custom-control-label" for="customCheck1">Remember password</label>
+		</div>
+
+		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+		<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Prisijungti</button>
+		<hr class="my-4">
+		<a href="{{path('app_register')}}" class="btn btn-lg btn-secondary btn-block text-uppercase">
+			Registracija</a>
+	</form>
+{% endblock %}
